@@ -24,9 +24,13 @@ window.addEventListener('hashchange', (event) => {
     case 'minimize':
       nodeIpc.send('app', 'minimize');
       break;
+    case 'add-person':
+      addPerson();
+      break;
     default:
       goTo(target);
   }
+
 });
 
 // Set all anchor tag to add the page to page stack for navigation use
@@ -89,3 +93,12 @@ function goBack() {
 }
 
 goTo('index');  // Load the index main content from the template
+
+let nameField = document.querySelector('#name');
+let emailField = document.querySelector('#email');
+let telField = document.querySelector('#tel');
+
+function addPerson() {
+  console.log('itemAdded', nameField.value);
+  goBack();
+}

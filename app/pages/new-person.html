@@ -1,5 +1,30 @@
 <template>
   <section class="section hide" id="section-new-person" data-title="New Person">
+      <form class="col s12" action="index.html" method="post">
 
+        <div class="row">
+          <div class="input-field col s12">
+            <label for="name" class="yellow-text">Name</label>
+            <input class="lime-text" type="text" id="name" class="validate" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <label for="email" class="yellow-text">E-mail</label>
+            <input class="lime-text" type="text" id="email">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <label for="tel" class="yellow-text">Tel</label>
+            <input class="lime-text" type="text" id="tel">
+          </div>
+        </div>
+
+      </form>
+
+      <a id="add-btn" href="#add-person" class="btn waves-effect waves-light btn-large green">Add</a>
   </section>
 </template>
