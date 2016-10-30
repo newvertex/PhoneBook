@@ -1,11 +1,19 @@
 let fs = require('fs');
 let sql = require('sql.js');
 
-const DB_NAME = 'data.db';
+const DB_NAME = 'db.sqlite';
 let dbPath = '';
 
 let db = null;
 
+// Create tables
+function init() {
+  let qStr = 'CREATE TABLE IF NOT EXISTS tbl_persons(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, email TEXT, tel TEXT);';
+
+  db.run(qStr);
+}
+
+// Read database from disk and open in memory
 function open(path = '', name = DB_NAME) {
   dbPath = path + '/' + name;
 
@@ -20,9 +28,11 @@ function open(path = '', name = DB_NAME) {
 
   if (fileBuffer) {
     db = new sql.Database(fileBuffer);
+    init();
   }
 }
 
+// Save the database to disk as a file
 function close() {
   let buffer = new Buffer.from(db.export());
   fs.writeFileSync(dbPath, buffer);
