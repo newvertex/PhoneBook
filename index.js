@@ -1,4 +1,5 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
+let db = require('./db');
 
 let win = null;
 
@@ -10,6 +11,8 @@ function createWindow() {
     frame: false
   });
 
+  db.open(app.getPath('userData'));  // Open the db on app start
+
   win.loadURL(`file://${__dirname}/app/index.html`);
 
   win.webContents.openDevTools();
@@ -20,6 +23,8 @@ function createWindow() {
   });
 
   win.on('closed', () => {
+    db.close(); // Save the db on disk and close it before close the app
+
     win = null;
   });
 }
