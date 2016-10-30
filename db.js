@@ -2,15 +2,18 @@ let fs = require('fs');
 let sql = require('sql.js');
 
 const DB_NAME = 'db.sqlite';
+const CREATE_TABLE_PERSONS = 'CREATE TABLE IF NOT EXISTS tbl_persons(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, email TEXT, tel TEXT);';
+const INSERT_PERSON = 'INSERT INTO tbl_persons(name, email, tel) VALUES(:name, :email, :tel);';
+
 let dbPath = '';
 
 let db = null;
+let stmt = null;
 
-// Create tables
+// Create tables, statements
 function init() {
-  let qStr = 'CREATE TABLE IF NOT EXISTS tbl_persons(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, email TEXT, tel TEXT);';
-
-  db.run(qStr);
+  db.run(CREATE_TABLE_PERSONS);
+  stmt = db.prepare(INSERT_PERSON);
 }
 
 // Read database from disk and open in memory
@@ -38,5 +41,10 @@ function close() {
   fs.writeFileSync(dbPath, buffer);
 }
 
+function add(values = {':name': '', ':email': '', ':tel': ''}) {
+  stmt.run(values);
+}
+
 module.exports.open = open;
 module.exports.close = close;
+module.exports.add = add;
