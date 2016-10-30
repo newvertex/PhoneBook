@@ -1,0 +1,8 @@
+{
+  "name": "PhoneBook",
+  "version": "0.0.1",
+  "description": "A simple Phone Book program",
+  "main": "index.js",
+  "author": "Mojtaba Rabiei <mojtaba.r127@gmail.com>",
+  "license": "MIT"
+}

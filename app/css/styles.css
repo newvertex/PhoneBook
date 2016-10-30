@@ -1,0 +1,63 @@
+::-webkit-scrollbar {
+  width: 10px;
+  background: rgba(167, 167, 167, 0.82);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(117, 117, 117);
+  border-radius: 1em;
+  width: 8px;
+}
+
+body {
+  background-color: rgba(129, 137, 173, 0.74);
+  -webkit-user-select: none;
+  cursor: default;
+  overflow: hidden;
+}
+
+.selectable {
+  -webkit-user-select: text;
+  cursor: text;
+}
+
+nav {
+  -webkit-app-region: drag;
+}
+
+nav a[href], .nav-btn {
+  -webkit-app-region: no-drag;
+}
+
+.title {
+  font-size: 1.6em;
+}
+
+.content {
+  max-height: 530px;
+  overflow-y: auto;
+}
+
+/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'), local('MaterialIcons-Regular'), url('../fonts/MaterialIcons.woff2') format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
