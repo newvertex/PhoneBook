@@ -97,9 +97,16 @@ goTo('index');  // Load the index main content from the template
 let nameField = document.querySelector('#name');
 let emailField = document.querySelector('#email');
 let telField = document.querySelector('#tel');
+let addForm = document.querySelector('#add-form');
 
 function addPerson() {
   nodeIpc.send('db', 'add', {':name': nameField.value, ':email': emailField.value, ':tel': telField.value});
-  // TODO: Clear field and show a message
+
+  // clearField
+  addForm.reset();
+
+  // Show added message
+  Materialize.toast('Person added', 3000);
+
   goBack();
 }
