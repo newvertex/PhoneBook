@@ -4,17 +4,10 @@ let sql = require('sql.js');
 const DB_NAME = 'db.sqlite';
 const CREATE_TABLE_PERSONS = 'CREATE TABLE IF NOT EXISTS tbl_persons(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, email TEXT, tel TEXT);';
 const INSERT_PERSON = 'INSERT INTO tbl_persons(name, email, tel) VALUES(:name, :email, :tel);';
+const SELECT_PERSON_ALL = 'SELECT id, name, email, tel FROM tbl_persons;';
 
 let dbPath = '';
-
 let db = null;
-let stmt = null;
-
-// Create tables, statements
-function init() {
-  db.run(CREATE_TABLE_PERSONS);
-  stmt = db.prepare(INSERT_PERSON);
-}
 
 // Read database from disk and open in memory
 function open(path = '', name = DB_NAME) {
@@ -31,7 +24,7 @@ function open(path = '', name = DB_NAME) {
 
   if (fileBuffer) {
     db = new sql.Database(fileBuffer);
-    init();
+    db.run(CREATE_TABLE_PERSONS); // Create table if not exists
   }
 }
 
@@ -42,9 +35,25 @@ function close() {
 }
 
 function add(values = {':name': '', ':email': '', ':tel': ''}) {
+  let stmt = db.prepare(INSERT_PERSON);
   stmt.run(values);
+  stmt.free();
+}
+
+function getAll() {
+  let stmt = db.prepare(SELECT_PERSON_ALL);
+  let result = [];
+
+  while (stmt.step()) {
+    result.push(stmt.getAsObject());
+  }
+  
+  stmt.free();
+
+  return result;
 }
 
 module.exports.open = open;
 module.exports.close = close;
 module.exports.add = add;
+module.exports.getAll = getAll;

@@ -2,12 +2,19 @@
 document.addEventListener('dragover', (event) => event.preventDefault());
 document.addEventListener('drop', (event) => event.preventDefault());
 
+let personItemTemplate = null;
+
 // Import all templates file
 let imports = document.querySelectorAll('link[rel=import]');
 for (let link of imports) {
   let template = link.import.querySelector('template');
-  let clone = document.importNode(template.content, true);
-  document.querySelector('.content').appendChild(clone);
+
+  if (template.classList.contains('person-item')) {
+    personItemTemplate = template;
+  } else {
+    let clone = document.importNode(template.content, true);
+    document.querySelector('.content').appendChild(clone);
+  }
 }
 
 // Check the url for action like close, minimize, back or change the page section and Etc.
@@ -27,6 +34,8 @@ window.addEventListener('hashchange', (event) => {
     case 'add-person':
       addPerson();
       break;
+    case 'persons-list':
+      nodeIpc.send('db', 'getAll');
     default:
       goTo(target);
   }
@@ -87,6 +96,10 @@ function goTo(page) {
 
 // Go one level back in page stack
 function goBack() {
+  if (pageStack.slice(-1)[0] === 'persons-list') {
+    clearPersonList();
+  }
+
   window.location.hash = pageStack.slice(-2)[0];
   pageStack = pageStack.slice(0, pageStack.length - 2);
   checkPageNav();
@@ -110,3 +123,33 @@ function addPerson() {
 
   goBack();
 }
+
+function showPersonsList(values) {
+  clearPersonList();
+  
+  for (let person of values) {
+    let item = document.importNode(personItemTemplate.content, true);
+
+    item.querySelector('a').href = '#person/' + person.id;
+    item.querySelector('#name').innerText = person.name;
+    item.querySelector('#email').innerText = person.email;
+    item.querySelector('#tel').innerText = person.tel;
+
+    document.querySelector('#persons-collection').appendChild(item);
+  }
+}
+
+function clearPersonList() {
+  let collection = document.querySelector('#persons-collection');
+  while (collection.firstChild) {
+    collection.removeChild(collection.firstChild);
+  }
+}
+
+nodeIpc.on('dbResult', (event, type, values) => {
+  switch (type) {
+    case 'resultAll':
+      showPersonsList(values);
+      break;
+  }
+});

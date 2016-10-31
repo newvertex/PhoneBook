@@ -61,5 +61,8 @@ ipcMain.on('db', (event, type, values) => {
     case 'add':
       db.add(values);
       break;
+    case 'getAll':
+      event.sender.send('dbResult', 'resultAll', db.getAll());
+      break;
   }
 });
