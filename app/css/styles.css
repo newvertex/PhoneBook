@@ -50,6 +50,20 @@ input[type="text"]
     font-size:2em;
 }
 
+.responsive-img {
+  width: 100%;
+}
+
+.card .card-content {
+  padding-left:0;
+  padding-right:0;
+}
+
+.card .card-content a {
+  width: 100%;
+  font-size: 1.3em;
+}
+
 /* fallback */
 @font-face {
   font-family: 'Material Icons';

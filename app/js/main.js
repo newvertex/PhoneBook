@@ -75,6 +75,13 @@ function setTitle(title) {
 
 // Show the page that user want
 function goTo(page) {
+  if (page.includes('/')) {
+    let id = page.substring(page.indexOf('/') + 1, page.length);
+    nodeIpc.send('db', 'getSingle', {':id': id});
+
+    page = page.substring(0, page.indexOf('/'));
+  }
+
   pageStack.push(page);
   checkPageNav();
 
@@ -126,7 +133,7 @@ function addPerson() {
 
 function showPersonsList(values) {
   clearPersonList();
-  
+
   for (let person of values) {
     let item = document.importNode(personItemTemplate.content, true);
 
@@ -146,10 +153,23 @@ function clearPersonList() {
   }
 }
 
+let singleName = document.querySelector('#single-name');
+let singleEmail = document.querySelector('#single-email');
+let singleTel = document.querySelector('#single-tel');
+
+function showSinglePerson(values) {
+  singleName.innerText = values.name;
+  singleEmail.innerText = values.email;
+  singleTel.innerText = values.tel;
+}
+
 nodeIpc.on('dbResult', (event, type, values) => {
   switch (type) {
     case 'resultAll':
       showPersonsList(values);
+      break;
+    case 'resultSingle':
+      showSinglePerson(values);
       break;
   }
 });

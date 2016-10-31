@@ -5,6 +5,7 @@ const DB_NAME = 'db.sqlite';
 const CREATE_TABLE_PERSONS = 'CREATE TABLE IF NOT EXISTS tbl_persons(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, email TEXT, tel TEXT);';
 const INSERT_PERSON = 'INSERT INTO tbl_persons(name, email, tel) VALUES(:name, :email, :tel);';
 const SELECT_PERSON_ALL = 'SELECT id, name, email, tel FROM tbl_persons;';
+const SELECT_PERSON_SINGLE = 'SELECT id, name, email, tel FROM tbl_persons WHERE id=:id;';
 
 let dbPath = '';
 let db = null;
@@ -47,7 +48,18 @@ function getAll() {
   while (stmt.step()) {
     result.push(stmt.getAsObject());
   }
-  
+
+  stmt.free();
+
+  return result;
+}
+
+function getSingle(values) {
+  let stmt = db.prepare(SELECT_PERSON_SINGLE);
+
+  stmt.step();
+  let result = stmt.getAsObject(values);
+
   stmt.free();
 
   return result;
@@ -57,3 +69,4 @@ module.exports.open = open;
 module.exports.close = close;
 module.exports.add = add;
 module.exports.getAll = getAll;
+module.exports.getSingle = getSingle;
