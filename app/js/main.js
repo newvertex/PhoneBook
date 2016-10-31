@@ -99,6 +99,7 @@ let emailField = document.querySelector('#email');
 let telField = document.querySelector('#tel');
 
 function addPerson() {
-  console.log('itemAdded', nameField.value);
+  nodeIpc.send('db', 'add', {':name': nameField.value, ':email': emailField.value, ':tel': telField.value});
+  // TODO: Clear field and show a message
   goBack();
 }

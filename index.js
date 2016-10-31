@@ -54,3 +54,12 @@ ipcMain.on('app', (event, arg) => {
       break;
   }
 });
+
+// Handle app communication with db
+ipcMain.on('db', (event, type, values) => {
+  switch (type) {
+    case 'add':
+      db.add(values);
+      break;
+  }
+});
