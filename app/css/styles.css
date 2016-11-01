@@ -64,6 +64,14 @@ input[type="text"]
   font-size: 1.3em;
 }
 
+.search-box {
+  background: rgb(255, 254, 238) !important;
+  border: 1px solid rgb(254, 214, 255) !important;
+  padding: 5px !important;
+  margin: 5px !important;
+  width: 94% !important;
+}
+
 /* fallback */
 @font-face {
   font-family: 'Material Icons';
