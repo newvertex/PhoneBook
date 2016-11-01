@@ -6,6 +6,7 @@ const CREATE_TABLE_PERSONS = 'CREATE TABLE IF NOT EXISTS tbl_persons(id INTEGER 
 const INSERT_PERSON = 'INSERT INTO tbl_persons(name, email, tel) VALUES(:name, :email, :tel);';
 const SELECT_PERSON_ALL = 'SELECT id, name, email, tel FROM tbl_persons;';
 const SELECT_PERSON_SINGLE = 'SELECT id, name, email, tel FROM tbl_persons WHERE id=:id;';
+const SELECT_PERSON_FILTERED = `SELECT id, name, email, tel FROM tbl_persons WHERE name LIKE :value OR email LIKE :value OR tel LIKE :value;`;
 
 let dbPath = '';
 let db = null;
@@ -54,6 +55,22 @@ function getAll() {
   return result;
 }
 
+function getFiltered(value = '') {
+  value = '%' + value + '%';
+
+  let stmt = db.prepare(SELECT_PERSON_FILTERED);
+  stmt.bind({':value': value});
+
+  let result = [];
+  while (stmt.step()) {
+    result.push(stmt.getAsObject());
+  }
+
+  stmt.free();
+
+  return result;
+}
+
 function getSingle(values) {
   let stmt = db.prepare(SELECT_PERSON_SINGLE);
 
@@ -70,3 +87,4 @@ module.exports.close = close;
 module.exports.add = add;
 module.exports.getAll = getAll;
 module.exports.getSingle = getSingle;
+module.exports.getFiltered = getFiltered;
