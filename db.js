@@ -43,16 +43,7 @@ function add(values = {':name': '', ':email': '', ':tel': ''}) {
 }
 
 function getAll() {
-  let stmt = db.prepare(SELECT_PERSON_ALL);
-  let result = [];
-
-  while (stmt.step()) {
-    result.push(stmt.getAsObject());
-  }
-
-  stmt.free();
-
-  return result;
+  return getFiltered();
 }
 
 function getFiltered(value = '') {
