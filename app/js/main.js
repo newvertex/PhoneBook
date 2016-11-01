@@ -2,6 +2,9 @@
 document.addEventListener('dragover', (event) => event.preventDefault());
 document.addEventListener('drop', (event) => event.preventDefault());
 
+let searchBox = document.querySelector('#search-box');
+let searchMode = false;
+
 let personItemTemplate = null;
 
 // Import all templates file
@@ -73,8 +76,23 @@ function setTitle(title) {
 
 // Show the page that user want
 function goTo(page) {
+  searchBox.classList.add('hide');
+  if (page === 'index') {
+    searchMode = false;
+  }
+
+  if (page === 'search') {
+    page = 'persons-list';
+    searchMode = true;
+  }
+
   if (page === 'persons-list') {
-    nodeIpc.send('db', 'getAll');
+    if (!searchMode) {
+      nodeIpc.send('db', 'getAll');
+    } else {
+      nodeIpc.send('db', 'getFiltered', searchBox.value);
+      searchBox.classList.remove('hide');
+    }
   }
 
   if (page.includes('/')) {
@@ -127,7 +145,7 @@ function addPerson() {
   // clearField
   addForm.reset();
   nameField.focus();
-  
+
   // Show added message
   Materialize.toast('Person added', 3000);
 
