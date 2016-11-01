@@ -2,8 +2,12 @@
 document.addEventListener('dragover', (event) => event.preventDefault());
 document.addEventListener('drop', (event) => event.preventDefault());
 
-let searchBox = document.querySelector('#search-box');
 let searchMode = false;
+let searchBox = document.querySelector('#search-box');
+
+searchBox.addEventListener('input', (event) => {
+  nodeIpc.send('db', 'getFiltered', searchBox.value);
+});
 
 let personItemTemplate = null;
 
