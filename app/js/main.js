@@ -34,8 +34,6 @@ window.addEventListener('hashchange', (event) => {
     case 'add-person':
       addPerson();
       break;
-    case 'persons-list':
-      nodeIpc.send('db', 'getAll');
     default:
       goTo(target);
   }
@@ -75,6 +73,10 @@ function setTitle(title) {
 
 // Show the page that user want
 function goTo(page) {
+  if (page === 'persons-list') {
+    nodeIpc.send('db', 'getAll');
+  }
+
   if (page.includes('/')) {
     let id = page.substring(page.indexOf('/') + 1, page.length);
     nodeIpc.send('db', 'getSingle', {':id': id});
@@ -124,11 +126,12 @@ function addPerson() {
 
   // clearField
   addForm.reset();
-
+  nameField.focus();
+  
   // Show added message
   Materialize.toast('Person added', 3000);
 
-  goBack();
+  // goBack();
 }
 
 function showPersonsList(values) {
