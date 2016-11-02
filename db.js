@@ -7,6 +7,7 @@ const INSERT_PERSON = 'INSERT INTO tbl_persons(name, email, tel) VALUES(:name, :
 const SELECT_PERSON_ALL = 'SELECT id, name, email, tel FROM tbl_persons;';
 const SELECT_PERSON_SINGLE = 'SELECT id, name, email, tel FROM tbl_persons WHERE id=:id;';
 const SELECT_PERSON_FILTERED = `SELECT id, name, email, tel FROM tbl_persons WHERE name LIKE :value OR email LIKE :value OR tel LIKE :value;`;
+const UPDATE_PERSON = 'UPDATE tbl_persons SET name=:name, email=:email, tel=:tel WHERE id=:id;';
 
 let dbPath = '';
 let db = null;
@@ -73,9 +74,18 @@ function getSingle(values) {
   return result;
 }
 
+function edit(values) {
+  let stmt = db.prepare(UPDATE_PERSON);
+  stmt.run(values);
+  stmt.free();
+
+  return getSingle(values);
+}
+
 module.exports.open = open;
 module.exports.close = close;
 module.exports.add = add;
 module.exports.getAll = getAll;
 module.exports.getSingle = getSingle;
 module.exports.getFiltered = getFiltered;
+module.exports.edit = edit;

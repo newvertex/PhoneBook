@@ -70,5 +70,8 @@ ipcMain.on('db', (event, type, values) => {
     case 'getFiltered':
       event.sender.send('dbResult', 'resultAll', db.getFiltered(values));
       break;
+    case 'edit':
+      event.sender.send('dbResult', 'resultSingle', db.edit(values));
+      break;
   }
 });

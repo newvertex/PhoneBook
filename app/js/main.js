@@ -103,9 +103,6 @@ function goTo(page) {
     currentPersonId = page.substring(page.indexOf('/') + 1, page.length);
     nodeIpc.send('db', 'getSingle', {':id': currentPersonId});
 
-    cancelEdit();
-    cancelDelete();
-
     page = page.substring(0, page.indexOf('/'));
   }
 
@@ -190,6 +187,9 @@ let singleEmailField = document.querySelector('#email-field');
 let singleTelField = document.querySelector('#tel-field');
 
 function showSinglePerson(values) {
+  cancelEdit();
+  cancelDelete();
+
   singleName.innerText = values.name;
   singleEmail.innerText = values.email;
   singleTel.innerText = values.tel;
@@ -236,8 +236,16 @@ function cancelEdit(event) {
 }
 
 function saveEdit(event) {
-
-  goBack();
+  nodeIpc.send(
+    'db',
+    'edit',
+    {
+      ':id': currentPersonId,
+      ':name': singleNameField.value,
+      ':email': singleEmailField.value,
+      ':tel': singleTelField.value
+    }
+  );
 }
 
 
