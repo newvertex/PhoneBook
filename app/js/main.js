@@ -103,6 +103,9 @@ function goTo(page) {
     let id = page.substring(page.indexOf('/') + 1, page.length);
     nodeIpc.send('db', 'getSingle', {':id': id});
 
+    cancelEdit();
+    cancelDelete();
+
     page = page.substring(0, page.indexOf('/'));
   }
 
@@ -182,10 +185,18 @@ let singleName = document.querySelector('#single-name');
 let singleEmail = document.querySelector('#single-email');
 let singleTel = document.querySelector('#single-tel');
 
+let singleNameField = document.querySelector('#name-field');
+let singleEmailField = document.querySelector('#email-field');
+let singleTelField = document.querySelector('#tel-field');
+
 function showSinglePerson(values) {
   singleName.innerText = values.name;
   singleEmail.innerText = values.email;
   singleTel.innerText = values.tel;
+
+  singleNameField.value = values.name;
+  singleEmailField.value = values.email;
+  singleTelField.value = values.tel;
 }
 
 nodeIpc.on('dbResult', (event, type, values) => {
@@ -198,3 +209,39 @@ nodeIpc.on('dbResult', (event, type, values) => {
       break;
   }
 });
+
+let personInfo = document.querySelector('#person-info');
+let deletePerson = document.querySelector('#delete-person');
+let editPerson = document.querySelector('#edit-person');
+
+
+function showDelete(event) {
+  personInfo.classList.add('hide');
+  deletePerson.classList.remove('hide');
+}
+
+function cancelDelete(event) {
+  deletePerson.classList.add('hide');
+  personInfo.classList.remove('hide');
+}
+
+function showEdit(event) {
+  personInfo.classList.add('hide');
+  editPerson.classList.remove('hide');
+}
+
+function cancelEdit(event) {
+  editPerson.classList.add('hide');
+  personInfo.classList.remove('hide');
+}
+
+function saveEdit(event) {
+
+  goBack();
+}
+
+
+function saveDelete(event) {
+
+  goBack();
+}
