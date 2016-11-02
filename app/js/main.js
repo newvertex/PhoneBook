@@ -100,8 +100,8 @@ function goTo(page) {
   }
 
   if (page.includes('/')) {
-    let id = page.substring(page.indexOf('/') + 1, page.length);
-    nodeIpc.send('db', 'getSingle', {':id': id});
+    currentPersonId = page.substring(page.indexOf('/') + 1, page.length);
+    nodeIpc.send('db', 'getSingle', {':id': currentPersonId});
 
     cancelEdit();
     cancelDelete();

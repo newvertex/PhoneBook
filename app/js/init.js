@@ -12,3 +12,4 @@ window.nodeShell = nodeRequire('electron').shell;
 
 window.pageStack = [];
 let currentSection = null;
+let currentPersonId = null;
