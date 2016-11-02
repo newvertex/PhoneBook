@@ -73,5 +73,8 @@ ipcMain.on('db', (event, type, values) => {
     case 'edit':
       event.sender.send('dbResult', 'resultSingle', db.edit(values));
       break;
+    case 'delete':
+      db.delete(values);
+      break;
   }
 });

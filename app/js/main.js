@@ -250,6 +250,7 @@ function saveEdit(event) {
 
 
 function saveDelete(event) {
-
+  nodeIpc.send('db', 'delete', {':id': currentPersonId});
+  
   goBack();
 }
